@@ -1,11 +1,18 @@
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
-const port = process.env.PORT || 3000;
+
+app.use(morgan('combined'));
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+  res.status(200).json({ status: 'ok' });
 });
 
-app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
-});
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}`);
+  });
+}
+
+module.exports = app; // 👈 necesario para los tests
