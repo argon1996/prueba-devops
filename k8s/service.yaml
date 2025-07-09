@@ -6,9 +6,9 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app: node-app
+    app: node-health-check  # ⚠️ Asegúrate que coincida con el label del deployment
   ports:
     - protocol: TCP
-      port: 80
+      port: 3000           # antes era 80 ❌
       targetPort: 3000
       nodePort: 30000
