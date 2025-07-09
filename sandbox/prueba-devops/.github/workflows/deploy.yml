@@ -18,19 +18,19 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: sandbox/prueba-devops/app
+        working-directory: app
 
       - name: Run tests
         run: npm test
-        working-directory: sandbox/prueba-devops/app
+        working-directory: app
 
       - name: Build Docker image
-        run: docker build -t node-health-check:latest ./sandbox/prueba-devops/app
+        run: docker build -t node-health-check:latest ./app
 
       - name: Load Docker image into Kind
         run: kind load docker-image node-health-check:latest
 
       - name: Apply Kubernetes manifests
         run: |
-          kubectl apply -f sandbox/prueba-devops/k8s/deployment.yaml
-          kubectl apply -f sandbox/prueba-devops/k8s/service.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
