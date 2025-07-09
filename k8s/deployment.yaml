@@ -1,33 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: node-app
-  namespace: devops-challenge
+  name: node-health-check          # ⚠️ este nombre debe coincidir
+  namespace: devops-challenge      # ⚠️ este namespace también
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: node-app
+      app: node-health-check
   template:
     metadata:
       labels:
-        app: node-app
+        app: node-health-check
     spec:
       containers:
-        - name: node-app
-          image: node-app
-          imagePullPolicy: Never  # 🔧 evita que busque la imagen en Docker Hub
-          command: ["node", "index.js"]
+        - name: app
+          image: node-health-check:latest
           ports:
             - containerPort: 3000
-          env:
-            - name: PORT
-              value: "3000"
-            - name: API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: api_key
           readinessProbe:
             httpGet:
               path: /health
