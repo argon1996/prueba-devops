@@ -35,6 +35,9 @@ jobs:
       - name: Load Docker image into Kind
         run: kind load docker-image node-health-check:latest
 
+      - name: Create namespace
+        run: kubectl create namespace devops-challenge
+
       - name: Apply Kubernetes manifests
         run: |
           kubectl apply -f k8s/secret.yaml
