@@ -47,7 +47,9 @@ jobs:
       - name: Validate deployment
         run: |
           kubectl rollout status deployment/node-health-check -n devops-challenge
-          curl http://localhost:30000/health || true
+          POD=$(kubectl get pods -n devops-challenge -l app=node-health-check -o jsonpath="{.items[0].metadata.name}")
+          echo "✅ Ejecutando curl dentro del pod $POD"
+          kubectl exec -n devops-challenge $POD -- curl http://localhost:3000/health || echo "⚠️ Falló el curl interno"
 
       - name: Debug failed rollout
         if: failure()
