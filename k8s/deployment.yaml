@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: node-health-check          # ⚠️ este nombre debe coincidir
-  namespace: devops-challenge      # ⚠️ este namespace también
+  name: node-health-check
+  namespace: devops-challenge
 spec:
   replicas: 1
   selector:
@@ -14,19 +14,24 @@ spec:
         app: node-health-check
     spec:
       containers:
-        - name: app
+        - name: node-health-check
           image: node-health-check:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           readinessProbe:
             httpGet:
               path: /health
               port: 3000
-            initialDelaySeconds: 5
+            initialDelaySeconds: 20
             periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 10
           livenessProbe:
             httpGet:
               path: /health
               port: 3000
-            initialDelaySeconds: 10
+            initialDelaySeconds: 25
             periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 5
