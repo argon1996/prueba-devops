@@ -48,3 +48,13 @@ jobs:
         run: |
           kubectl rollout status deployment/node-health-check -n devops-challenge
           curl http://localhost:30000/health || true
+
+      - name: Debug failed rollout
+        if: failure()
+        run: |
+          echo "⚠️ Describing pod..."
+          kubectl get pods -n devops-challenge
+          POD_NAME=$(kubectl get pods -n devops-challenge -l app=node-health-check -o jsonpath="{.items[0].metadata.name}")
+          kubectl describe pod $POD_NAME -n devops-challenge
+          echo "📦 Pod logs:"
+          kubectl logs $POD_NAME -n devops-challenge
