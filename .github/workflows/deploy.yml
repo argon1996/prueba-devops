@@ -1,5 +1,3 @@
-# .github/workflows/deploy.yml
-
 name: CI/CD
 
 on:
@@ -20,12 +18,14 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: app
 
       - name: Run tests
         run: npm test
+        working-directory: app
 
       - name: Build Docker image
-        run: docker build -t node-health-check:latest .
+        run: docker build -t node-health-check:latest ./app
 
       - name: Load Docker image into Kind
         run: kind load docker-image node-health-check:latest
