@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: node-app
-          image: node-app:latest
+          image: node-app
+          imagePullPolicy: Never  # 🔧 evita que busque la imagen en Docker Hub
           command: ["node", "index.js"]
           ports:
             - containerPort: 3000
