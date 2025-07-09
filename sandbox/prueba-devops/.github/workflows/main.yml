@@ -1,5 +1,4 @@
-# .github/workflows/main.yml
-name: CI Test
+name: Deploy Node App
 
 on:
   push:
@@ -11,8 +10,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Node.js Setup
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '20'
       - run: npm install
