@@ -1,5 +1,5 @@
 name: CI/CD Pipeline
-
+# activación forzada del workflow
 on:
   push:
     branches: [main]
