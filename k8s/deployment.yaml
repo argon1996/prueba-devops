@@ -1,37 +1,43 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1              # Versión de la API de Kubernetes usada para crear un Deployment
+kind: Deployment                 # Tipo de recurso: Deployment
+
 metadata:
-  name: node-health-check
-  namespace: devops-challenge
+  name: node-health-check        # Nombre del deployment
+  namespace: devops-challenge    # Namespace donde se desplegará el deployment
+
 spec:
-  replicas: 1
+  replicas: 1                    # Número de réplicas del pod a ejecutar
   selector:
     matchLabels:
-      app: node-health-check
-  template:
+      app: node-health-check     # Selector para emparejar los pods gestionados por este deployment
+
+  template:                      # Plantilla de pod que se usará para crear las réplicas
     metadata:
       labels:
-        app: node-health-check
+        app: node-health-check   # Etiqueta del pod; debe coincidir con el selector del deployment
+
     spec:
       containers:
-        - name: node-health-check
-          image: node-health-check:latest
-          imagePullPolicy: IfNotPresent
+        - name: node-health-check     # Nombre del contenedor
+          image: node-health-check:latest  # Imagen de Docker a usar
+          imagePullPolicy: IfNotPresent    # Solo descarga la imagen si no está localmente
           ports:
-            - containerPort: 3000
-          readinessProbe:
+            - containerPort: 3000          # Puerto expuesto por el contenedor
+
+          readinessProbe:                  # Verifica si el contenedor está listo para recibir tráfico
             httpGet:
-              path: /health
+              path: /health                # Ruta que se consulta para verificar la "readiness"
               port: 3000
-            initialDelaySeconds: 20
-            periodSeconds: 5
-            timeoutSeconds: 2
-            failureThreshold: 10
-          livenessProbe:
+            initialDelaySeconds: 20        # Espera 20 segundos antes de iniciar la primera verificación
+            periodSeconds: 5               # Repite la verificación cada 5 segundos
+            timeoutSeconds: 2              # Timeout de 2 segundos por intento
+            failureThreshold: 10           # Si falla 10 veces seguidas, se considera no listo
+
+          livenessProbe:                   # Verifica si el contenedor sigue vivo (no colgado)
             httpGet:
-              path: /health
+              path: /health                # Ruta que se consulta para verificar la "liveness"
               port: 3000
-            initialDelaySeconds: 25
-            periodSeconds: 10
-            timeoutSeconds: 2
-            failureThreshold: 5
+            initialDelaySeconds: 25        # Espera 25 segundos antes de iniciar la primera verificación
+            periodSeconds: 10              # Repite la verificación cada 10 segundos
+            timeoutSeconds: 2              # Timeout de 2 segundos por intento
+            failureThreshold: 5            # Si falla 5 veces seguidas, Kubernetes reinicia el contenedor

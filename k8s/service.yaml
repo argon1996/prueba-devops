@@ -1,14 +1,16 @@
-apiVersion: v1
-kind: Service
+apiVersion: v1                  # Versión de la API de Kubernetes para servicios
+kind: Service                   # Tipo de recurso: Service
+
 metadata:
-  name: node-health-check
-  namespace: devops-challenge
+  name: node-health-check       # Nombre del servicio
+  namespace: devops-challenge   # Namespace donde se va a desplegar
+
 spec:
-  type: NodePort
+  type: NodePort                # Tipo de servicio que expone el puerto en todos los nodos del clúster
   selector:
-    app: node-health-check  # ⚠️ Asegúrate que coincida con el label del deployment
+    app: node-health-check      # 🔗 Se conecta a los pods con este label (debe coincidir con el deployment)
   ports:
-    - protocol: TCP
-      port: 3000           # antes era 80 ❌
-      targetPort: 3000
-      nodePort: 30000
+    - protocol: TCP             # Protocolo usado (TCP)
+      port: 3000                # Puerto del servicio dentro del clúster
+      targetPort: 3000          # Puerto del contenedor al que se dirige el tráfico
+      nodePort: 30000           # Puerto expuesto en el nodo (para acceder desde fuera del clúster)
