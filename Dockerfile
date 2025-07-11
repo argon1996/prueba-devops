@@ -7,7 +7,7 @@ RUN npm install --omit=dev
 
 COPY app/. ./
 
-# Agrega esta línea para instalar curl
+# Agrega esta línea para instalar curl1
 RUN apk add --no-cache curl
 
 EXPOSE 3000
