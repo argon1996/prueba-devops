@@ -1,14 +1,15 @@
-FROM node:20-alpine                     # Usa una imagen ligera de Node.js 20 basada en Alpine Linux
+FROM node:20-alpine
 
-WORKDIR /app                            # Establece el directorio de trabajo dentro del contenedor
+WORKDIR /app
 
-COPY app/package*.json ./               # Copia los archivos de dependencias (package.json y package-lock.json)
-RUN npm install --omit=dev              # Instala solo las dependencias necesarias para producción
+COPY app/package*.json ./
+RUN npm install --omit=dev
 
-COPY app/. ./                           # Copia el resto de los archivos de la app al contenedor
+COPY app/. ./
 
-RUN apk add --no-cache curl             # 🛠 Instala curl en el contenedor (útil para pruebas desde dentro)
+# Agrega esta línea para instalar curl
+RUN apk add --no-cache curl
 
-EXPOSE 3000                             # Expone el puerto 3000 para acceder a la app
+EXPOSE 3000
 
-CMD ["node", "index.js"]               # Comando que se ejecuta al iniciar el contenedor
+CMD ["node", "index.js"]
